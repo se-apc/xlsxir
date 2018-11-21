@@ -36,12 +36,16 @@ defmodule Xlsxir.ParseStyle do
 
   def sax_event_handler({:startElement,_,'xf',_,xml_attr}, %__MODULE__{num_fmt_ids: num_fmt_ids} = state) do
     if state.cellxfs do
-      [{_,_,_,_,id}] = Enum.filter(xml_attr, fn attr ->
+      xxx = Enum.filter(xml_attr, fn attr ->
                          case attr do
                            {:attribute,'numFmtId',_,_,_} -> true
-                           _                             -> false
+                           {:attribute,'xfId',_,_,_} -> true
+                           other                         -> IO.puts("other = #{inspect other}")
+                             false
                          end
                        end)
+      IO.puts("xxx = #{inspect xxx}")
+      [{_,_,_,_,id}] = xxx
       %{state | num_fmt_ids: num_fmt_ids ++ [id]}
     else
       state
