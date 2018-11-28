@@ -39,7 +39,9 @@ defmodule Xlsxir.ParseStyle do
       [{_,_,_,_,id}] = Enum.filter(xml_attr, fn attr ->
                          case attr do
                            {:attribute,'numFmtId',_,_,_} -> true
-                           _                             -> false
+                           {:attribute,'xfId',_,_,_} -> true
+                           other                         -> IO.puts("other = #{inspect other}")
+                             false
                          end
                        end)
       %{state | num_fmt_ids: num_fmt_ids ++ [id]}
